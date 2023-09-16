@@ -10,17 +10,17 @@ for row in range(9):
     tiles.append([])
     for col in range(9):
         tiles[row].append(Tile())
-board = [ [0, 0, 0,     0, 0, 0,      0, 0, 0],
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
+board = [ [7, 8, 0,     6, 0, 9,      5, 0, 0],
+          [0, 0, 6,     7, 0, 0,      0, 0, 0],
+          [0, 0, 3,     0, 0, 0,      0, 8, 0],
 
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
+          [0, 0, 8,     0, 0, 0,      0, 0, 0],
+          [0, 0, 0,     0, 1, 0,      9, 0, 0],
+          [4, 2, 0,     3, 0, 0,      0, 5, 0],
 
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
-          [0, 0, 0,     0, 0, 0,      0, 0, 0],
-          [0, 0, 0,     0, 0, 0,      0, 0, 0]]
+          [5, 7, 0,     4, 0, 0,      0, 2, 0],
+          [6, 0, 0,     0, 0, 0,      0, 0, 0],
+          [0, 0, 0,     0, 0, 3,      0, 0, 4]]
 def printGrid(grid):
     for r in range(9):
         for c in range(9):
@@ -59,7 +59,7 @@ def place(r, c, num,grid):
         for j in range(3):
             grid[r + i][c + j].posNums.discard(num)
 
-# checks to see if there's only one option for a tile
+# checks to see if there's only one option for a tile and if there is places it
 def checkOne(grid):
     for r in range(9):
         for c in range(9):
@@ -116,7 +116,7 @@ def onlyOption(resNums, resRows, resCols, resBox,grid):
                 if appearances == 1:
                     place(row, col, num,grid)
 
-# finds and updates hidden 2s and 3s, doesn't work on boxes
+# finds and updates hidden 2s and 3s
 def hiddenTwoThrees(resRows, resCols,grid):
     for r in range(9):
         if r not in resRows:
@@ -297,7 +297,7 @@ def hiddenTwoThrees(resRows, resCols,grid):
                 j += 1
             i += 1
 
-# checks to see if there's x options in x tiles in each r,c,b
+# checks to see if there's x options in x tiles in each r,c,b, removes all other options from Tiles when this is the case
 def xOptions(resRows, resCols, resBox,grid):
     for r in range(9):
         if r not in resRows:
@@ -389,6 +389,7 @@ def isValid(grid):
                 return False
     return True
 
+#Checks to see if the grid is solved
 def isSolved(grid):
     for r in range(9):
         for c in range(9):
@@ -396,6 +397,7 @@ def isSolved(grid):
                 return False
     return True
 
+#Uses all the strategies and when they no longer are effective, guesses on a possible value and calls itself
 def recursiveStrats(r,c,num,grid):
     global changed
     place(r,c,num,grid)
@@ -448,7 +450,6 @@ for row in range(9):
             place(row,col,board[row][col],tiles)
 while True:
     if isSolved(tiles):
-        printGrid(tiles)
         break
     lastChanged=changed
     changed=False
